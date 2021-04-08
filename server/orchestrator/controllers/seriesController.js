@@ -5,13 +5,13 @@ const axios = require('axios')
 class SeriesController {
   static async read(req, res, next) {
     try {
-      const moviesData = await redis.get('series:data')
-      if(!moviesData){
+      const seriesData = await redis.get('series:data')
+      if(!seriesData){
         const { data } = await axios.get('http://localhost:4002/series')
-        await redis.set('movies:data', JSON.stringify(data))
+        await redis.set('series:data', JSON.stringify(data))
         res.status(200).json(data)
       } else {
-        res.status(200).json(JSON.parse(moviesData))
+        res.status(200).json(JSON.parse(seriesData))
       }
     } catch (err) {
       next({
@@ -83,6 +83,8 @@ class SeriesController {
   static async delete(req, res, next) {
     try {
       const id = req.params.id
+      
+      await redis.del('series:data')
       const { data } = await axios({
         url: `http://localhost:4001/series/${id}`,
         method: 'DELETE'

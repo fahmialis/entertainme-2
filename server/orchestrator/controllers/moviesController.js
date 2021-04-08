@@ -22,7 +22,6 @@ class MovieController {
   }
 
   static async add(req, res, next) {
-    console.log(req.body);
     try {
       const { title, overview, poster_path, popularity, tags } = req.body[0]
       const newMovie = { title, overview, poster_path, popularity, tags }
@@ -45,6 +44,8 @@ class MovieController {
   static async findOne(req, res, next) {
     try {
       const id = req.params.id
+
+      await redis.del('movies:data')
       const { data } = await axios({
         url: `http://localhost:4001/movies/${id}`,
         method: 'GET'
@@ -84,6 +85,8 @@ class MovieController {
   static async delete(req, res, next) {
     try {
       const id = req.params.id
+      
+      await redis.del('movies:data')
       const { data } = await axios({
         url: `http://localhost:4001/movies/${id}`,
         method: 'DELETE'
