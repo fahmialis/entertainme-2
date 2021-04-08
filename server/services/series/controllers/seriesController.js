@@ -12,7 +12,6 @@ class SeriesController {
   }
 
   static findOne(req, res, next) {
-    // console.log(req.params);
     const id = req.params.id
 
     Series.findById(id)
@@ -25,8 +24,9 @@ class SeriesController {
   }
 
   static add(req, res, next) {
-    // console.log(req.body, 'body');
-    const data = req.body
+    const { title, overview, poster_path, popularity, tags } = req.body
+    const data = { title, overview, poster_path, popularity, tags }
+
     Series.create(data)
       .then(data => {
         res.status(201).json(data.ops)
@@ -37,7 +37,6 @@ class SeriesController {
   }
 
   static delete(req, res, next) {
-    // console.log(req.params);
     const id = req.params.id
     Series.destroy(id)
       .then(data => {
@@ -49,10 +48,9 @@ class SeriesController {
   }
     
   static update(req, res, next) {
-    // console.log(req.params);
-    // console.log(req.body);
     const id = req.params.id
-    const data = req.body
+    const { title, overview, poster_path, popularity, tags } = req.body
+    const data = { title, overview, poster_path, popularity, tags }
 
     Series.updateOne(id, data)
       .then(data => {
