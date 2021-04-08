@@ -43,8 +43,19 @@ class MovieController {
   }
 
   static async findOne(req, res, next) {
-    const id = req.params.id
-
+    try {
+      const id = req.params.id
+      const { data } = await axios({
+        url: `http://localhost:4001/movies/${id}`,
+        method: 'GET'
+      })
+      res.status(200).json(data)
+    } catch (err) {
+      next({
+        code : 400,
+        message : err.message
+      })
+    }
   }
 
 
@@ -73,14 +84,17 @@ class MovieController {
   static async delete(req, res, next) {
     try {
       const id = req.params.id
-      
+      const { data } = await axios({
+        url: `http://localhost:4001/movies/${id}`,
+        method: 'DELETE'
+      })
+      res.status(200).json(data)
     } catch (err) {
       next({
         code : 400,
         message : err.message
       })
     }
-      
   }
 }
 
