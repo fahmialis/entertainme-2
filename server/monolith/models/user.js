@@ -10,17 +10,17 @@ class User {
     return getDatabase().collection('users').find().toArray()
   }
 
-  static findOne(id) {
+  static findById(id) {
     return getDatabase().collection('users').findOne({
       _id: ObjectId(id)
     })
   }
 
-  static update(id, data) {
+  static updateOne(id, data) {
     return getDatabase().collection('users').update({_id: ObjectId(id)}, {data})
   }
 
-  static delete (id) {
+  static destroy (id) {
     return getDatabase().collection('users').deleteOne({
       _id: ObjectId(id)
     })
