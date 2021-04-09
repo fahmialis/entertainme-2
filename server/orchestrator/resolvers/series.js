@@ -2,17 +2,19 @@ const axios = require("axios");
 
 module.export = {
   Query: {
-    series: () => {
-      return axios({
-        url: 'http://localhost:4002/series',
-        method: 'get'
-      })
-      .then(({data}) => {
-        return data
-      })
-      .catch(err => {
-        return err
-      })
+    series: async () => {
+      try {
+        const seriesData = await redis.get('entertainme:series')
+        if(!seriesData){
+          const { data } = await axios.get('http://localhost:4002/series')
+          await redis.set('entertainme:series', JSON.stringify(data))
+          return(data)
+        } else {
+          return (JSON.parse(seriesData))
+        }
+      } catch (err) {
+        return(err)
+      }
     },
     findSeriesById: (_, args) => {
       const {id} = args
