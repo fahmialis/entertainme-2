@@ -23,6 +23,7 @@ class SeriesController {
 
   static async add(req, res, next) {
     try {
+      console.log(req.body);
       const { title, overview, poster_path, popularity, tags } = req.body[0]
       const newSeries = { title, overview, poster_path, popularity, tags }
 
@@ -45,7 +46,7 @@ class SeriesController {
     try {
       const id = req.params.id
       const { data } = await axios({
-        url: `http://localhost:4001/series/${id}`,
+        url: `http://localhost:4002/series/${id}`,
         method: 'GET'
       })
       res.status(200).json(data)
@@ -66,7 +67,7 @@ class SeriesController {
 
       await redis.del('series:data')
       const { data } = await axios({
-        url: 'http://localhost:4001/series',
+        url: 'http://localhost:4002/series',
         method: 'PATCH',
         data: updatedData
       })
@@ -86,7 +87,7 @@ class SeriesController {
       
       await redis.del('series:data')
       const { data } = await axios({
-        url: `http://localhost:4001/series/${id}`,
+        url: `http://localhost:4002/series/${id}`,
         method: 'DELETE'
       })
       res.status(200).json(data)
