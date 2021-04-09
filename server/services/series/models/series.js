@@ -17,7 +17,7 @@ class Series {
   }
 
   static updateOne(id, data) {
-    return getDatabase().collection('series').update({_id: ObjectId(id)}, {data})
+    return getDatabase().collection('series').update({_id: ObjectId(id)}, {$set: data})
   }
 
   static destroy (id) {

@@ -52,9 +52,11 @@ class MoviesController {
     const id = req.params.id
     const { title, overview, poster_path, popularity, tags } = req.body
     const data = { title, overview, poster_path, popularity, tags }
+    console.log(data);
 
     Movies.updateOne(id, data)
       .then(data => {
+        // console.log(data);
         res.status(200).json(data)
       })
       .catch(err => {
