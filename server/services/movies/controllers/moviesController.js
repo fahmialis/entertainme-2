@@ -48,6 +48,7 @@ class MoviesController {
   }
     
   static update(req, res, next) {
+    console.log('masuk update');
     const id = req.params.id
     const { title, overview, poster_path, popularity, tags } = req.body
     const data = { title, overview, poster_path, popularity, tags }

@@ -1,23 +1,28 @@
 const Redis = require("ioredis");
 const redis = new Redis()
 const axios = require('axios')
-const MovieController = require('../controllers/moviesController')
-const SeriesController = require('../controllers/seriesController')
 
 class OrchestratorController {
   static async readAll(req, res, next) {
     try {
-      const seriesData = await redis.get('series:data')
-      const moviesData = await redis.get('movies:data')
-      if(seriesData && moviesData) {
-        const response = {movies: JSON.parse(moviesData), series: JSON.parse(seriesData)}
-        res.status(200).json(response)
+      const entertainme = JSON.parse(await redis.get("entertainme"))
+      if (entertainme) {
+        res.status(200).json(entertainme)
       } else {
-        const [movies, series] = await Promise.all([
-          MovieController.read(),
-          SeriesController.read()
-        ])
-
+        let movies;
+        axios.get("http://localhost:4001/movies")
+          .then(({ data }) => {
+            movies = data
+            return axios.get("http://localhost:4002/series")
+          })
+          .then(({ data }) => {
+            const series = data;
+            redis.set("entertainme", JSON.stringify({ movies, series }))
+            res.status(200).json({ movies, series })
+          })
+          .catch((err) => {
+            res.status(500).json(err)
+          })
       }
     } catch (err) {
       next({

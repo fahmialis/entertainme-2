@@ -8,6 +8,7 @@ const typeDefs = gql`
   }
 
   type Movies {
+    _id: String
     title: String
     overview: String
     poster_path: String
@@ -88,8 +89,7 @@ const resolvers = {
         method: 'get'
       })
       .then(({data}) => {
-        console.log(data);
-        return data
+        return data.data
       })
       .catch(err => {
         return err
@@ -111,21 +111,21 @@ const resolvers = {
         data
       })
       .then(({data}) => {
-        console.log(data);
-        return data
+        return data[0]
       })
       .catch(err => {
         return err
       })
     },
     updateMovieById: (_, args) => {
-      const id = args.newMovie.id
+      console.log(args, 'update');
+      const id = args.id
       const data = {
-        title: args.newMovie.title,
-        overview: args.newMovie.overview,
-        poster_path: args.newMovie.poster_path,
-        popularity: args.newMovie.popularity,
-        tags: args.newMovie.tags,
+        title: args.movieUpdate.title,
+        overview: args.movieUpdate.overview,
+        poster_path: args.movieUpdate.poster_path,
+        popularity: args.movieUpdate.popularity,
+        tags: args.movieUpdate.tags,
       }
       return axios({
         method: 'PATCH',
@@ -133,7 +133,7 @@ const resolvers = {
         data
       })
       .then(({data}) => {
-        return data
+        return data.result
       })
       .catch(err => {
         return err
@@ -143,8 +143,7 @@ const resolvers = {
       const { id } = args
       return axios({
         method: 'DELETE',
-        url: `http://localhost:4001/movies/${id}`,
-        data
+        url: `http://localhost:4001/movies/${id}`
       })
       .then(({data}) => {
         return data
