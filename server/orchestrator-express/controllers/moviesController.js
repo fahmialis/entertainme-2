@@ -68,17 +68,17 @@ class MovieController {
       
       await redis.del('movies:data')
       const { data } = await axios({
-        url: 'http://localhost:4001/movies',
+        url: `http://localhost:4001/movies/${id}`,
         method: 'PATCH',
         data: updatedData
       })
+
       res.status(201).json(data)
     } catch (err) {
       next({
         code : 400,
         message : err.message
       })
-      
     } 
   }
 
