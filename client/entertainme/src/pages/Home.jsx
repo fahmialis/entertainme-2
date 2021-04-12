@@ -5,33 +5,26 @@ import MovieCard from '../components/MovieCard'
 export default function Home() {
   return (
     <div>
-      <div className="jumbotron" style={{background : 'none', marginBottom: 0, width:"100%", padding: 25}}>
-        <h1 className="display-4">Home</h1>
-        <h2 className="lead">Movie and series list</h2> 
-      </div>
-      <div className="container d-flex justify-content-around" style={{margin: 20}}>
-        {/* movie */}
-        <div className="col-lg-6">
-          <div className="jumbotron" style={{background : 'black', marginBottom: 0, color: 'white'}}>
-            <h3 className="display-4">Movie</h3>
-            <h2 className="lead">Movie list</h2> 
-          </div>
-        {/* movie cards */}
-        <MovieCard></MovieCard>
+      {/* movie */}
+      <div className="container-fluid mt-2 mb-3" style={{height: 400}}>
+        <div className="d-flex justify-content-between p-3 bg-white mb-3 align-items-center"> 
+        <h1 className="font-weight-bold text-uppercase">Movies List</h1>
         </div>
+          <div className="row row-cols-4 overflow-auto" style={{height: 400, padding: 30}}>
+          <MovieCard></MovieCard>
 
+          </div>
+      </div>
+      <br/><br/><br/><br/><br/>
+      {/* movie */}
 
-        {/* series */}
-        {/* <div className="col-lg-6">
-          <div className="jumbotron" style={{background : 'black', marginBottom: 0, color: 'white'}}>
-            <h3 className="display-4">Series</h3>
-            <h2 className="lead">Series list</h2> 
-          </div> */}
-        {/* series cards */}
-        {/* <SeriesCard></SeriesCard> */}
-        
-        {/* </div> */}
-
+      <div className="container-fluid mt-2 mb-3" style={{height: 400}}>
+        <div className="d-flex justify-content-between p-3 bg-white mb-3 align-items-center"> 
+        <h1 className="font-weight-bold text-uppercase">Series List</h1>
+        </div>
+          <div className="row row-cols-4 overflow-auto" style={{height: 500, padding: 30}}>
+          <SeriesCard></SeriesCard>
+          </div>
       </div>
     </div>
   )
