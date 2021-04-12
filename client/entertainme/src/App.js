@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Home from './pages/Home'
+import AddMovie from './pages/AddMovie'
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+      <nav aria-label="breadcrumb">
+        <ol className="breadcrumb">
+          <Link to="/" className="breadcrumb-item">Home</Link>
+          <Link to="/add" className="breadcrumb-item">Add Movie</Link>
+        </ol>
+      </nav>
+      <div className="body">
+      <Switch>
+        <Route path="/add">
+          <AddMovie></AddMovie>
+        </Route>
+        <Route path="/">
+          <Home></Home>
+        </Route>
+      </Switch>
+      </div>
+      </div>
+    </Router>
   );
 }
 
