@@ -1,5 +1,5 @@
-import React from 'react'
-import { useQuery, gql } from '@apollo/client'
+import React, { useState } from 'react'
+import { useQuery, gql, useMutation } from '@apollo/client'
 import { useParams } from 'react-router-dom'
 import ClipLoader from "react-spinners/ClipLoader"
 
@@ -20,6 +20,14 @@ query findMovieById($id: ID) {
 }
 `
 
+const UPDATE_MOVIE = gql `
+mutation editMovie($movieUpdate: movieUpdate) {
+  updateMovieById(movieUpdate: $movieUpdate) {
+    _id
+  }
+}
+`
+
 export default function EditMovie() {
   const { id } = useParams()
   const [title, setTitle] = useState('')
@@ -27,15 +35,56 @@ export default function EditMovie() {
   const [popularity, setPopularity] = useState('')
   const [poster_path, setPosterPath] = useState('')
   const [tags, setTags] = useState('')
+
   const { data, loading, error } = useQuery(GET_MOVIE_BY_ID, {
     variables: {id}
   })
+
+  const [updateMovie, {data: updateData, loading: updateLoading, error: updateError}] = useMutation(UPDATE_MOVIE)
+
   const history = useHistory()
   
   const toHome = () => {
     history.push('/')
   }
 
+  function editTitle(event) {
+    setTitle(event.target.value)
+    console.log(title);
+  }
+
+  function editOverview(event) {
+    setOverview(event.target.value)
+  }
+
+  function editPopularity(event) {
+    setPopularity(event.target.value)
+  }
+
+  function editPosterPath(event) {
+    setPosterPath(event.target.value)
+  }
+
+  function editTags(event) {
+    setTags(event.target.value)
+  }
+
+  function tagsToArray(tags) {
+    return tags.split(', ').filter(tag => tag)
+  }
+  
+  function editMovie(event) {
+    event.preventDefault()
+    const movieUpdate = {
+      title,
+      overview,
+      poster_path,
+      popularity: +popularity,
+      tags: tagsToArray(tags)
+    }
+
+    console.log(movieUpdate);
+  }
   return (
   <div className="container">
     {
@@ -45,36 +94,38 @@ export default function EditMovie() {
         <div className="card card-signin my-5">
         <div className="card-body">
           <h4 className="card-title text-center"><b>Edit Movie</b></h4>
-          <form className="form-signin">
+
+          <form className="form-signin" onSubmit={editMovie}>
             <div className="form-label-group">
               <h5>Title</h5>
-              <input type="text" className="form-control" value={data.findMovieById.title} required/>
+              <input type="text" className="form-control" defaultValue={data.findMovieById.title} onChange={editTitle} required/>
             </div>
             <br/>
             <div className="form-label-group">
               <h5>Overview</h5>
-              <input type="text" className="form-control" value={data.findMovieById.overview} required/>
+              <input type="text" className="form-control" defaultValue={data.findMovieById.overview} onChange={editOverview} required/>
             </div>
             <br/>
             <div className="form-label-group">
               <h5>Rating</h5>
-              <input type="number" min="0" className="form-control" value={data.findMovieById.popularity} required/>
+              <input type="number" min="0" max="10" step="0.1" className="form-control" defaultValue={data.findMovieById.popularity} onChange={editPopularity} required/>
             </div>
             <br/>
             <div className="form-label-group">
               <h5>Image</h5>
-              <input type="url" className="form-control" value={data.findMovieById.poster_path} required/>
+              <input type="url" className="form-control" defaultValue={data.findMovieById.poster_path} onChange={editPosterPath} required/>
             </div>
             <br/>
             <div className="form-label-group">
               <h5>Tags</h5>
-                <input type="text" className="form-control" value={data.findMovieById.tags}  />
-                <small id="tagsHelp" className="form-text text-muted">Example Tags: action, drama</small>
+                <input type="text" className="form-control" defaultValue={data.findMovieById.tags} onChange={editTags}  />
+                <small id="tagsHelp" className="form-text text-muted">Format: action, drama. Please mind the space after coma.</small>
             </div>
             <br/><br/>
             <button className="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
             <button className="btn btn-lg btn-danger btn-block" onClick={() => {toHome()}}>Cancel</button>
           </form>
+
         </div>
         </div>
       </div>
