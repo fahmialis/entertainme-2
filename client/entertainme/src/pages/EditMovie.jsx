@@ -1,10 +1,35 @@
 import React from 'react'
+import { useQuery, gql } from '@apollo/client'
+import { useParams } from 'react-router-dom'
+import ClipLoader from "react-spinners/ClipLoader"
 
 import {
   useHistory
 } from "react-router-dom"
 
+const GET_MOVIE_BY_ID = gql`
+query findMovieById($id: ID) {
+  findMovieById(id: $id){
+    _id
+    title
+    overview
+    poster_path
+    popularity
+    tags 
+  }
+}
+`
+
 export default function EditMovie() {
+  const { id } = useParams()
+  const [title, setTitle] = useState('')
+  const [overview, setOverview] = useState('')
+  const [popularity, setPopularity] = useState('')
+  const [poster_path, setPosterPath] = useState('')
+  const [tags, setTags] = useState('')
+  const { data, loading, error } = useQuery(GET_MOVIE_BY_ID, {
+    variables: {id}
+  })
   const history = useHistory()
   
   const toHome = () => {
@@ -13,6 +38,8 @@ export default function EditMovie() {
 
   return (
   <div className="container">
+    {
+      loading ? <ClipLoader></ClipLoader> :
     <div className="row">
       <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div className="card card-signin my-5">
@@ -21,46 +48,28 @@ export default function EditMovie() {
           <form className="form-signin">
             <div className="form-label-group">
               <h5>Title</h5>
-              <input type="text" className="form-control" placeholder="title" v-model="product.name" required/>
+              <input type="text" className="form-control" value={data.findMovieById.title} required/>
             </div>
             <br/>
             <div className="form-label-group">
               <h5>Overview</h5>
-              <input type="text" className="form-control" placeholder="Overview" required/>
+              <input type="text" className="form-control" value={data.findMovieById.overview} required/>
             </div>
             <br/>
             <div className="form-label-group">
               <h5>Rating</h5>
-              <input type="number" min="0" className="form-control" placeholder="Rating"required/>
+              <input type="number" min="0" className="form-control" value={data.findMovieById.popularity} required/>
             </div>
             <br/>
             <div className="form-label-group">
               <h5>Image</h5>
-              <input type="url" className="form-control" placeholder="Image url" required/>
+              <input type="url" className="form-control" value={data.findMovieById.poster_path} required/>
             </div>
             <br/>
             <div className="form-label-group">
               <h5>Tags</h5>
-              <input type="checkbox" name="Action" value="Action"/>
-              <label htmlFor="Action">Action</label>
-              <input type="checkbox" name="Drama" value="Drama"/>
-              <label htmlFor="Drama">Drama</label>
-              <input type="checkbox" name="Comedy" value="Comedy"/>
-              <label htmlFor="Comedy">Comedy</label>
-              <input type="checkbox" name="Romance" value="Romance"/>
-              <label htmlFor="Romance">Romance</label>
-              <input type="checkbox" name="Adventure" value="Adventure"/>
-              <label htmlFor="Adventure">Adventure</label><br/>
-              <input type="checkbox" name="Horror" value="Horror"/>
-              <label htmlFor="Horror">Horror</label>
-              <input type="checkbox" name="Thriller" value="Thriller"/>
-              <label htmlFor="Thriller">Thriller</label>
-              <input type="checkbox" name="Crime" value="Crime"/>
-              <label htmlFor="Crime">Crime</label>
-              <input type="checkbox" name="Mistery" value="Mistery"/>
-              <label htmlFor="Mistery">Mistery </label>
-              <input type="checkbox" name="Fantasy" value="Fantasy"/>
-              <label htmlFor="Fantasy">Fantasy</label>
+                <input type="text" className="form-control" value={data.findMovieById.tags}  />
+                <small id="tagsHelp" className="form-text text-muted">Example Tags: action, drama</small>
             </div>
             <br/><br/>
             <button className="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
@@ -70,6 +79,7 @@ export default function EditMovie() {
         </div>
       </div>
     </div>
+    }
   </div>
   )
 }

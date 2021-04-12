@@ -1,6 +1,77 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useQuery, gql, useMutation } from '@apollo/client'
+import { useHistory } from "react-router-dom"
+
+const ADD_NEW_MOVIE = gql `
+  mutation addNewMovie($newMovie: newMovie) {
+    addNewMovie(newMovie: $newMovie){ 
+      title
+      overview
+      poster_path
+      popularity
+      tags
+    }
+  }
+`
 
 export default function AddMovie() {
+  const [title, setTitle] = useState('')
+  const [overview, setOverview] = useState('')
+  const [popularity, setPopularity] = useState('')
+  const [poster_path, setPosterPath] = useState('')
+  const [tags, setTags] = useState('')
+
+  const [addNewMovie, {data, loading, error}] = useMutation(ADD_NEW_MOVIE)
+
+  const history = useHistory()
+  
+  const toHome = () => {
+    history.push('/')
+  }
+
+  function addTitle(event) {
+    setTitle(event.target.value)
+  }
+
+  function addOverview(event) {
+    setOverview(event.target.value)
+  }
+
+  function addPopularity(event) {
+    setPopularity(event.target.value)
+  }
+
+  function addPosterPath(event) {
+    setPosterPath(event.target.value)
+  }
+
+  function addTags(event) {
+    setTags(event.target.value)
+  }
+
+  function tagsToArray(tags) {
+    return tags.split(', ').filter(tag => tag)
+  }
+
+  function submitMovie(event) {
+    event.preventDefault()
+    const newMovie = {
+      title,
+      overview,
+      poster_path,
+      popularity: +popularity,
+      tags: tagsToArray(tags)
+    }
+    console.log(newMovie)
+
+    addNewMovie({
+      variables: {
+        newMovie: newMovie
+      }
+    })
+    // history.push('/')
+  }
+
   return (
   <div className="container">
     <div className="row">
@@ -8,54 +79,38 @@ export default function AddMovie() {
         <div className="card card-signin my-5">
         <div className="card-body">
           <h4 className="card-title text-center"><b>Add Movie</b></h4>
-          <form className="form-signin">
-            <div className="form-label-group">
-              <h5>Title</h5>
-              <input type="text" className="form-control" placeholder="Name" required/>
-            </div>
-            <br/>
-            <div className="form-label-group">
-              <h5>Overview</h5>
-              <input type="text" className="form-control" placeholder="Overview" required/>
-            </div>
-            <br/>
-            <div className="form-label-group">
-              <h5>Rating</h5>
-              <input type="number" min="0" className="form-control" placeholder="Rating"required/>
-            </div>
-            <br/>
-            <div className="form-label-group">
-              <h5>Image</h5>
-              <input type="url" className="form-control" placeholder="Image url" required/>
-            </div>
-            <br/>
-            <div className="form-label-group">
-              <h5>Tags</h5>
-              <input type="checkbox" name="Action" value="Action"/>
-              <label htmlFor="Action">Action</label>
-              <input type="checkbox" name="Drama" value="Drama"/>
-              <label htmlFor="Drama">Drama</label>
-              <input type="checkbox" name="Comedy" value="Comedy"/>
-              <label htmlFor="Comedy">Comedy</label>
-              <input type="checkbox" name="Romance" value="Romance"/>
-              <label htmlFor="Romance">Romance</label>
-              <input type="checkbox" name="Adventure" value="Adventure"/>
-              <label htmlFor="Adventure">Adventure</label><br/>
-              <input type="checkbox" name="Horror" value="Horror"/>
-              <label htmlFor="Horror">Horror</label>
-              <input type="checkbox" name="Thriller" value="Thriller"/>
-              <label htmlFor="Thriller">Thriller</label>
-              <input type="checkbox" name="Crime" value="Crime"/>
-              <label htmlFor="Crime">Crime</label>
-              <input type="checkbox" name="Mistery" value="Mistery"/>
-              <label htmlFor="Mistery">Mistery </label>
-              <input type="checkbox" name="Fantasy" value="Fantasy"/>
-              <label htmlFor="Fantasy">Fantasy</label>
-            </div>
-            <br/><br/>
-            <button className="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
-            <button className="btn btn-lg btn-danger btn-block">Cancel</button>
+
+          <form className="form-signin" onSubmit={(event) => submitMovie(event)}>
+              <div className="form-label-group">
+                <h5>Title</h5>
+                <input type="text" className="form-control" placeholder="title" onChange={addTitle} required/>
+              </div>
+              <br/>
+              <div className="form-label-group">
+                <h5>Overview</h5>
+                <input type="text" className="form-control" placeholder="Overview" onChange={addOverview} required/>
+              </div>
+              <br/>
+              <div className="form-label-group">
+                <h5>Popularity</h5>
+                <input type="number" min="0" max="10" step="0.1" className="form-control" onChange={addPopularity} placeholder="Rating"required/>
+              </div>
+              <br/>
+              <div className="form-label-group">
+                <h5>Poster</h5>
+                <input type="url" className="form-control" placeholder="Image url" onChange={addPosterPath} required/>
+              </div>
+              <br/>
+              <div className="form-label-group">
+                <h5>Tags</h5>
+                  <input type="text" className="form-control" placeholder="tags" onChange={addTags} />
+                  <small id="tagsHelp" className="form-text text-muted">Format: action, drama. Please mind the space after coma.</small>
+              </div>
+              <br/><br/>
+              <button className="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+              <button className="btn btn-lg btn-danger btn-block" onClick={toHome}>Cancel</button>
           </form>
+
         </div>
         </div>
       </div>
