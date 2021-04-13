@@ -20,3 +20,9 @@ query Entertainme {
   }
 }
 `
+
+export const GET_FAVOURITES = gql`
+  query getFavourites {
+    Favourites @client
+  }
+`

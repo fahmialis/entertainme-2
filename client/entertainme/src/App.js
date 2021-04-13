@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import AddMovie from './pages/AddMovie'
 import EditMovie from './pages/EditMovie'
 import MovieDetail from './pages/DetailPage'
+import Favourite from './pages/Favourites'
 import { ApolloProvider } from '@apollo/client/react'
 import client from './graphql/config'
 
@@ -23,6 +24,7 @@ function App() {
           <ol className="breadcrumb" style={{margin: 0}}>
             <Link to="/" className="breadcrumb-item">Home</Link>
             <Link to="/add" className="breadcrumb-item">Add Movie</Link>
+            <Link to="/favourite" className="breadcrumb-item">Favourite</Link>
           </ol>
         </nav>
         <div className="body">
@@ -35,6 +37,9 @@ function App() {
           </Route>
           <Route path="/add">
             <AddMovie></AddMovie>
+          </Route>
+          <Route path="/favourite">
+            <Favourite></Favourite>
           </Route>
           <Route path="/">
             <Home></Home>

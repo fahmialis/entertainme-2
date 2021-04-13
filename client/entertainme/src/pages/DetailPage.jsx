@@ -1,6 +1,7 @@
 import React from 'react'
 import { useQuery, gql } from '@apollo/client'
 import { useParams } from 'react-router-dom'
+import { Favourites } from '../graphql/cache'
 import ClipLoader from "react-spinners/ClipLoader"
 
 const GET_MOVIE_BY_ID = gql`
@@ -22,18 +23,24 @@ export default function DetailPage() {
     variables: {id}
   })
 
+  function addToFavorite() {
+    // console.log(data.findMovieById);
+    const favouriteMovie = Favourites()
+    Favourites([data.findMovieById, ...favouriteMovie])
+  }
   return (
     <div>
       {
         loading ? <ClipLoader></ClipLoader> :
-        <div class="jumbotron" style={{marginTop: 0}}>
+        <div className="jumbotron" style={{marginTop: 0}}>
         <img id="main-image" src={data.findMovieById.poster_path} alt="movie poster"/> 
-          <h1 class="display-4">{data.findMovieById.title}</h1>
-          <p class="lead">{data.findMovieById.overview}</p>
+          <h1 className="display-4">{data.findMovieById.title}</h1>
+          <p className="lead">{data.findMovieById.overview}</p>
           <p>Rating: {data.findMovieById.popularity}</p>
           <p>Tags: {data.findMovieById.tags.join(', ')}</p>
-          <p class="lead">
-            <a class="btn btn-primary btn-lg" href="#" role="button">Add to favourite</a>
+          <p className="lead">
+
+            <button type="button" className="btn btn-outline-primary" onClick={addToFavorite}>Add to Favourite</button>
           </p>
         </div>
       }
