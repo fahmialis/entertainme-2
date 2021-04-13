@@ -13,7 +13,7 @@ export default function Favourites() {
           <h1 className="text-left ml-2">Favourites</h1>
         </div>
       </div>
-      <div className="row">
+      <div className="row row-cols-5 overflow-auto" style={{height: 500, padding: 50}}>
       {
         loading ? <ClipLoader></ClipLoader> :
         data.Favourites.map(favourite => {

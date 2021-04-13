@@ -3,10 +3,10 @@ import { useQuery, gql, useMutation } from '@apollo/client'
 import { useParams } from 'react-router-dom'
 import ClipLoader from "react-spinners/ClipLoader"
 import { GET_ALL_DATA } from '../queries'
-
-import {
-  useHistory
-} from "react-router-dom"
+import { useHistory } from "react-router-dom"
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+toast.configure();
 
 const GET_MOVIE_BY_ID = gql`
 query findMovieById($id: ID) {
@@ -100,6 +100,12 @@ export default function EditMovie() {
         id, movieUpdate
       }
     })
+
+    toast.success(`${movieUpdate.title} updated`, {
+      autoClose: 3000,
+      position: toast.POSITION.TOP_CENTER,
+    });
+    
     history.push('/')
   }
 

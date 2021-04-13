@@ -10,34 +10,36 @@ export default function Home() {
   return (
     <div>
       {/* movie */}
-      <div className="container-fluid mt-2 mb-3" style={{height: 400}}>
-        <div className="d-flex justify-content-between p-3 bg-white mb-3 align-items-center"> 
+      <div className="container mt-4 bg-light p-5 main-bg mb-5">
+      <div className="row d-flex mb-2">
+        <div className="col-md-11"> 
         <h1 className="font-weight-bold text-uppercase">Movies List</h1>
         </div>
-          <div className="row row-cols-5 overflow-auto" style={{height: 500, padding: 30}}>
+          <div className="row row-cols-5 overflow-auto" style={{height: 500}}>
             {
               loading ? <ClipLoader></ClipLoader> :
               data.movies.map(movie => {
                 return <MovieCard movie={movie} key={movie._id}></MovieCard>
               })
             }
-
           </div>
-      </div>
-      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+          </div>
+      </div><hr/>
       {/* movie */}
 
-      <div className="container-fluid mt-2 mb-3" style={{height: 400}}>
-        <div className="d-flex justify-content-between p-3 bg-white mb-3 align-items-center"> 
+      <div className="container mt-4 bg-light p-5 main-bg mb-5">
+      <div className="row d-flex mb-2">
+        <div className="col-md-11"> 
         <h1 className="font-weight-bold text-uppercase">Series List</h1>
         </div>
-          <div className="row row-cols-5 overflow-auto" style={{height: 500, padding: 30}}>
+          <div className="row row-cols-5 overflow-auto" style={{height: 500, padding: 50}}>
             {
               loading ? <ClipLoader></ClipLoader> :
               data.series.map(serie => {
                 return <SeriesCard serie={serie} key={serie._id}></SeriesCard>
               })
             }
+          </div>
           </div>
       </div>
     </div>

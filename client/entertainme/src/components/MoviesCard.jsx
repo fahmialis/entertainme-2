@@ -1,10 +1,10 @@
 import React from 'react'
 import { useMutation, gql } from '@apollo/client';
 import { GET_ALL_DATA } from '../queries'
-
-import {
-  useHistory
-} from "react-router-dom"
+import { useHistory } from "react-router-dom"
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+toast.configure();
 
 const DELETE_MOVIE = gql`
 mutation deleteMovieById($id: ID) {
@@ -33,10 +33,15 @@ export default function MoviesCard({movie}) {
       }
     })
 
+    toast.success(`${movie.title} deleted`, {
+      autoClose: 3000,
+      position: toast.POSITION.TOP_CENTER,
+    });
+
   }
   
   return (
-    <div className="card" style={{width: "10rem", height: 330}}>
+    <div className="card" style={{width: "10rem", height: 350, margin: 23}}>
       <img className="card-img-top" src={movie.poster_path} alt="Movie poster" style={{height: 230}}/>
       <div className="card-body">
         <p className="card-text">{movie.title}</p>

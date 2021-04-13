@@ -3,6 +3,10 @@ import { useQuery, gql } from '@apollo/client'
 import { useParams } from 'react-router-dom'
 import { Favourites } from '../graphql/cache'
 import ClipLoader from "react-spinners/ClipLoader"
+import { GET_FAVOURITES } from '../queries'
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+toast.configure();
 
 const GET_MOVIE_BY_ID = gql`
 query findMovieById($id: ID) {
@@ -19,14 +23,29 @@ query findMovieById($id: ID) {
 
 export default function DetailPage() {
   const { id } = useParams()
+  const {data: favourite, loading: favLoading, error: favError} = useQuery(GET_FAVOURITES)
   const { data, loading, error } = useQuery(GET_MOVIE_BY_ID, {
     variables: {id}
   })
 
   function addToFavorite() {
+    const isAdded = favourite.Favourites.find((fav) => {
+      return fav._id === data.findMovieById._id
+    })
     // console.log(data.findMovieById);
-    const favouriteMovie = Favourites()
-    Favourites([data.findMovieById, ...favouriteMovie])
+    if(!isAdded) {
+      toast.success(`Added ${data.findMovieById.title} to your favorite`, {
+        autoClose: 3000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+      const favouriteMovie = Favourites()
+      Favourites([data.findMovieById, ...favouriteMovie])
+    } else {
+      toast.error(`${data.findMovieById.title} is already in your favorite`, {
+        autoClose: 3000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
   }
   return (
     <div>
@@ -39,7 +58,6 @@ export default function DetailPage() {
           <p>Rating: {data.findMovieById.popularity}</p>
           <p>Tags: {data.findMovieById.tags.join(', ')}</p>
           <p className="lead">
-
             <button type="button" className="btn btn-outline-primary" onClick={addToFavorite}>Add to Favourite</button>
           </p>
         </div>
