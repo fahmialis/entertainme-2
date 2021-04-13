@@ -55,7 +55,8 @@ module.exports = {
     },
     updateMovieById: async (_, args) => {
       try {
-      console.log(args.movieUpdate, 'update');
+      // console.log(args.movieUpdate, 'update');
+      // console.log(args.id, '<<<<<<<<<<<<<')
       const id = args.id
       const update = {
         title: args.movieUpdate.title,
@@ -73,6 +74,7 @@ module.exports = {
       })
         return(data)
       } catch (err) {
+        // console.log(err)
         return(err)
       } 
     },
