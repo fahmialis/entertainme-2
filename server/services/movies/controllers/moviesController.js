@@ -29,7 +29,7 @@ class MoviesController {
 
     Movies.create(data)
       .then(data => {
-        res.status(201).json(data.ops)
+        res.status(201).json(data)
       })
       .catch(err => {
         res.status(400).json(err)

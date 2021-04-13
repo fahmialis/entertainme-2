@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery, gql, useMutation } from '@apollo/client'
 import { useParams } from 'react-router-dom'
 import ClipLoader from "react-spinners/ClipLoader"
+import { GET_ALL_DATA } from '../queries'
 
 import {
   useHistory
@@ -21,8 +22,8 @@ query findMovieById($id: ID) {
 `
 
 const UPDATE_MOVIE = gql `
-mutation editMovie($movieUpdate: movieUpdate) {
-  updateMovieById(movieUpdate: $movieUpdate) {
+mutation editMovie($id:ID, $movieUpdate: MoviesInput) {
+  updateMovieById(id:$id, movieUpdate: $movieUpdate) {
     _id
   }
 }
@@ -30,17 +31,27 @@ mutation editMovie($movieUpdate: movieUpdate) {
 
 export default function EditMovie() {
   const { id } = useParams()
+  const { data, loading, error } = useQuery(GET_MOVIE_BY_ID, {
+    variables: {id}
+  })
+  
   const [title, setTitle] = useState('')
   const [overview, setOverview] = useState('')
   const [popularity, setPopularity] = useState('')
   const [poster_path, setPosterPath] = useState('')
   const [tags, setTags] = useState('')
+  
+  useEffect(() => {
+    if(data) {
+      setTitle(data.findMovieById.title)
+      setOverview(data.findMovieById.overview)
+      setPopularity(data.findMovieById.popularity)
+      setPosterPath(data.findMovieById.poster_path)
+      setTags(data.findMovieById.tags.join(', '))
+    }
+  }, [data])
 
-  const { data, loading, error } = useQuery(GET_MOVIE_BY_ID, {
-    variables: {id}
-  })
-
-  const [updateMovie, {data: updateData, loading: updateLoading, error: updateError}] = useMutation(UPDATE_MOVIE)
+  const [updateMovie, {data: updateData, loading: updateLoading, error: updateError}] = useMutation(UPDATE_MOVIE, {refetchQueries: [{query: GET_ALL_DATA}]})
 
   const history = useHistory()
   
@@ -50,7 +61,6 @@ export default function EditMovie() {
 
   function editTitle(event) {
     setTitle(event.target.value)
-    console.log(title);
   }
 
   function editOverview(event) {
@@ -84,7 +94,15 @@ export default function EditMovie() {
     }
 
     console.log(movieUpdate);
+
+    updateMovie({
+      variables: {
+        id, movieUpdate
+      }
+    })
+    history.push('/')
   }
+
   return (
   <div className="container">
     {
@@ -98,27 +116,27 @@ export default function EditMovie() {
           <form className="form-signin" onSubmit={editMovie}>
             <div className="form-label-group">
               <h5>Title</h5>
-              <input type="text" className="form-control" defaultValue={data.findMovieById.title} onChange={editTitle} required/>
+              <input type="text" className="form-control" value={title} onChange={editTitle} required/>
             </div>
             <br/>
             <div className="form-label-group">
               <h5>Overview</h5>
-              <input type="text" className="form-control" defaultValue={data.findMovieById.overview} onChange={editOverview} required/>
+              <input type="text" className="form-control" value={overview} onChange={editOverview} required/>
             </div>
             <br/>
             <div className="form-label-group">
               <h5>Rating</h5>
-              <input type="number" min="0" max="10" step="0.1" className="form-control" defaultValue={data.findMovieById.popularity} onChange={editPopularity} required/>
+              <input type="number" min="0" max="10" step="0.1" className="form-control" value={popularity} onChange={editPopularity} required/>
             </div>
             <br/>
             <div className="form-label-group">
               <h5>Image</h5>
-              <input type="url" className="form-control" defaultValue={data.findMovieById.poster_path} onChange={editPosterPath} required/>
+              <input type="url" className="form-control" value={poster_path} onChange={editPosterPath} required/>
             </div>
             <br/>
             <div className="form-label-group">
               <h5>Tags</h5>
-                <input type="text" className="form-control" defaultValue={data.findMovieById.tags} onChange={editTags}  />
+                <input type="text" className="form-control" value={tags} onChange={editTags}  />
                 <small id="tagsHelp" className="form-text text-muted">Format: action, drama. Please mind the space after coma.</small>
             </div>
             <br/><br/>
@@ -134,3 +152,4 @@ export default function EditMovie() {
   </div>
   )
 }
+

@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { useQuery, gql, useMutation } from '@apollo/client'
 import { useHistory } from "react-router-dom"
+import { GET_ALL_DATA } from '../queries'
 
 const ADD_NEW_MOVIE = gql `
-  mutation addNewMovie($newMovie: newMovie) {
+  mutation addNewMovie($newMovie: MoviesInput) {
     addNewMovie(newMovie: $newMovie){ 
       title
       overview
@@ -21,7 +22,9 @@ export default function AddMovie() {
   const [poster_path, setPosterPath] = useState('')
   const [tags, setTags] = useState('')
 
-  const [addNewMovie, {data, loading, error}] = useMutation(ADD_NEW_MOVIE)
+  const [addNewMovie, {data, loading, error}] = useMutation(ADD_NEW_MOVIE, {
+    refetchQueries: [{query: GET_ALL_DATA}]
+  })
 
   const history = useHistory()
   
@@ -69,7 +72,7 @@ export default function AddMovie() {
         newMovie: newMovie
       }
     })
-    // history.push('/')
+    history.push('/')
   }
 
   return (
