@@ -1,22 +1,10 @@
 import React, { useState } from 'react'
 import { useQuery, gql, useMutation } from '@apollo/client'
 import { useHistory } from "react-router-dom"
-import { GET_ALL_DATA } from '../queries'
+import { GET_ALL_DATA, ADD_NEW_MOVIE } from '../queries'
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 toast.configure();
-
-const ADD_NEW_MOVIE = gql `
-  mutation addNewMovie($newMovie: MoviesInput) {
-    addNewMovie(newMovie: $newMovie){ 
-      title
-      overview
-      poster_path
-      popularity
-      tags
-    }
-  }
-`
 
 export default function AddMovie() {
   const [title, setTitle] = useState('')
@@ -76,8 +64,8 @@ export default function AddMovie() {
     })
     toast.success(`${newMovie.title} added to the list`, {
       autoClose: 3000,
-      position: toast.POSITION.TOP_CENTER,
-    });
+      position: toast.POSITION.TOP_RIGHT,
+    })
     history.push('/')
   }
 

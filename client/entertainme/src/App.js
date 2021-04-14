@@ -24,7 +24,7 @@ function App() {
           <ol className="breadcrumb" style={{margin: 0}}>
             <Link to="/" className="breadcrumb-item">Home</Link>
             <Link to="/add" className="breadcrumb-item">Add Movie</Link>
-            <Link to="/favourite" className="breadcrumb-item">Favourite</Link>
+            <Link to="/favourite" className="breadcrumb-item">Favourites</Link>
           </ol>
         </nav>
         <div className="body">

@@ -3,23 +3,10 @@ import { useQuery, gql } from '@apollo/client'
 import { useParams } from 'react-router-dom'
 import { Favourites } from '../graphql/cache'
 import ClipLoader from "react-spinners/ClipLoader"
-import { GET_FAVOURITES } from '../queries'
+import { GET_FAVOURITES, GET_MOVIE_BY_ID } from '../queries'
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 toast.configure();
-
-const GET_MOVIE_BY_ID = gql`
-query findMovieById($id: ID) {
-  findMovieById(id: $id){
-    _id
-    title
-    overview
-    poster_path
-    popularity
-    tags 
-  }
-}
-`
 
 export default function DetailPage() {
   const { id } = useParams()
@@ -36,15 +23,15 @@ export default function DetailPage() {
     if(!isAdded) {
       toast.success(`Added ${data.findMovieById.title} to your favorite`, {
         autoClose: 3000,
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.TOP_RIGHT,
       });
       const favouriteMovie = Favourites()
       Favourites([data.findMovieById, ...favouriteMovie])
     } else {
       toast.error(`${data.findMovieById.title} is already in your favorite`, {
         autoClose: 3000,
-        position: toast.POSITION.TOP_CENTER,
-      });
+        position: toast.POSITION.TOP_RIGHT,
+      })
     }
   }
   return (

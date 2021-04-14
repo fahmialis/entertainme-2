@@ -3,16 +3,9 @@ import { useMutation, gql } from '@apollo/client';
 import { GET_ALL_DATA } from '../queries'
 import { useHistory } from "react-router-dom"
 import { toast } from "react-toastify";
+import { DELETE_MOVIE } from '../queries'
 import "react-toastify/dist/ReactToastify.css";
 toast.configure();
-
-const DELETE_MOVIE = gql`
-mutation deleteMovieById($id: ID) {
-  deleteMovieById(id: $id) {
-    _id
-  }
-}
-`
 
 export default function MoviesCard({movie}) {
   const history = useHistory()
@@ -34,10 +27,9 @@ export default function MoviesCard({movie}) {
     })
 
     toast.success(`${movie.title} deleted`, {
-      autoClose: 3000,
-      position: toast.POSITION.TOP_CENTER,
-    });
-
+      autoClose: 2000,
+      position: toast.POSITION.TOP_RIGHT,
+    })
   }
   
   return (
