@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function FavouriteCard({favourite}) {
   return (
-    <div className="card" style={{width: "10rem", height: 350, margin: 10}}>
+    <div className="card" style={{width: "20rem", height: 350, margin: 10}}>
         <img className="card-img-top" src={favourite.poster_path} alt="Movies poster" style={{height: 230}}/>
       <div className="card-body">
         <p className="card-text">{favourite.title}</p>
