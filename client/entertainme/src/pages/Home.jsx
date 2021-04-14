@@ -32,7 +32,7 @@ export default function Home() {
         <div className="col-md-11"> 
         <h1 className="font-weight-bold text-uppercase">Series List</h1>
         </div>
-          <div className="row row-cols-5 overflow-auto" style={{height: 500, padding: 50}}>
+          <div className="row row-cols-5 overflow-auto" style={{height: 500}}>
             {
               loading ? <ClipLoader></ClipLoader> :
               data.series.map(serie => {

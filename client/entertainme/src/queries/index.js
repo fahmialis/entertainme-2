@@ -27,14 +27,6 @@ export const GET_FAVOURITES = gql`
   }
 `
 
-export const DELETE_MOVIE = gql`
-mutation deleteMovieById($id: ID) {
-  deleteMovieById(id: $id) {
-    _id
-  }
-}
-`
-
 export const GET_MOVIE_BY_ID = gql`
 query findMovieById($id: ID) {
   findMovieById(id: $id){
@@ -44,6 +36,14 @@ query findMovieById($id: ID) {
     poster_path
     popularity
     tags 
+  }
+}
+`
+
+export const DELETE_MOVIE = gql`
+mutation deleteMovieById($id: ID) {
+  deleteMovieById(id: $id) {
+    _id
   }
 }
 `
