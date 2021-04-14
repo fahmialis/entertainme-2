@@ -21,7 +21,7 @@ function App() {
       <ApolloProvider client={client}>
       <div className="App">
         <nav aria-label="breadcrumb">
-          <ol className="breadcrumb" style={{margin: 0}}>
+          <ol className="breadcrumb bg-dark" style={{margin: 0}}>
             <Link to="/" className="breadcrumb-item">Home</Link>
             <Link to="/add" className="breadcrumb-item">Add Movie</Link>
             <Link to="/favourite" className="breadcrumb-item">Favourites</Link>

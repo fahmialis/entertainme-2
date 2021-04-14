@@ -38,7 +38,7 @@ export default function DetailPage() {
     <div>
       {
         loading ? <ClipLoader></ClipLoader> :
-        <div className="jumbotron" style={{marginTop: 0}}>
+        <div className="jumbotron bg-dark" style={{marginTop: 0, color: "whitesmoke"}}>
         <img id="main-image" src={data.findMovieById.poster_path} alt="movie poster"/> 
           <h1 className="display-4">{data.findMovieById.title}</h1>
           <p className="lead">{data.findMovieById.overview}</p>

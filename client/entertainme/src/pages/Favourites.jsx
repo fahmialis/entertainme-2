@@ -7,7 +7,7 @@ import ClipLoader from "react-spinners/ClipLoader"
 export default function Favourites() {
   const {data, loading, error} = useQuery(GET_FAVOURITES)
   return (
-    <div className="container mt-4 bg-light p-5 main-bg mb-5">
+    <div className="container mt-4 bg-dark p-5 main-bg mb-5" style={{color: "whitesmoke"}}>
       <div className="row d-flex mb-2">
         <div className="col-md-11">
           <h1 className="text-left ml-2">Favourites</h1>

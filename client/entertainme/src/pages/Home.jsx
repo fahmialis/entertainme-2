@@ -10,12 +10,12 @@ export default function Home() {
   return (
     <div>
       {/* movie */}
-      <div className="container mt-4 bg-light p-5 main-bg mb-5">
+      <div className="container mt-4 bg-dark p-5 main-bg mb-5">
       <div className="row d-flex mb-2">
         <div className="col-md-11"> 
-        <h1 className="font-weight-bold text-uppercase">Movies List</h1>
+        <h1 className="font-weight-bold text-uppercase" style={{color:"whitesmoke"}}>Movies List</h1>
         </div>
-          <div className="row row-cols-5 overflow-auto" style={{height: 500}}>
+          <div className="row row-cols-5 overflow-auto" style={{height: 500, marginBottom: 0}}>
             {
               loading ? <ClipLoader></ClipLoader> :
               data.movies.map(movie => {
@@ -24,13 +24,14 @@ export default function Home() {
             }
           </div>
           </div>
-      </div><hr/>
+      </div>
+      <hr/>
       {/* movie */}
 
-      <div className="container mt-4 bg-light p-5 main-bg mb-5">
+      <div className="container mt-4 bg-dark p-5 main-bg mb-5">
       <div className="row d-flex mb-2">
         <div className="col-md-11"> 
-        <h1 className="font-weight-bold text-uppercase">Series List</h1>
+        <h1 className="font-weight-bold text-uppercase" style={{color:"whitesmoke"}}>Series List</h1>
         </div>
           <div className="row row-cols-5 overflow-auto" style={{height: 500}}>
             {
